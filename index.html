@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>筋トレ成長記録</title>
+
+  <!-- グラフ用ライブラリ -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#111;
+      color:white;
+      line-height:1.6;
+    }
+
+    header{
+      height:100vh;
+      background:
+      linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
+      url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:20px;
+    }
+
+    .hero h1{
+      font-size:60px;
+      color:#ff3b3b;
+      margin-bottom:20px;
+    }
+
+    .hero p{
+      font-size:24px;
+      margin-bottom:30px;
+    }
+
+    .btn{
+      display:inline-block;
+      background:#ff3b3b;
+      color:white;
+      padding:15px 30px;
+      border-radius:10px;
+      text-decoration:none;
+      transition:0.3s;
+      font-weight:bold;
+    }
+
+    .btn:hover{
+      transform:scale(1.05);
+      background:#ff1a1a;
+    }
+
+    section{
+      padding:80px 10%;
+    }
+
+    h2{
+      text-align:center;
+      font-size:40px;
+      color:#ff3b3b;
+      margin-bottom:40px;
+    }
+
+    /* ステータス */
+
+    .status-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+    }
+
+    .status-card{
+      background:#1d1d1d;
+      padding:30px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 0 10px rgba(255,255,255,0.1);
+    }
+
+    .status-card h3{
+      margin-bottom:10px;
+      color:#ff3b3b;
+    }
+
+    .big-number{
+      font-size:40px;
+      font-weight:bold;
+    }
+
+    /* 今日のメニュー */
+
+    .menu-box{
+      background:#1d1d1d;
+      padding:30px;
+      border-radius:15px;
+      max-width:700px;
+      margin:auto;
+    }
+
+    .menu-box ul{
+      margin-top:20px;
+      padding-left:20px;
+    }
+
+    .menu-box li{
+      margin-bottom:10px;
+    }
+
+    /* フォーム */
+
+    form{
+      max-width:700px;
+      margin:auto;
+      background:#1d1d1d;
+      padding:30px;
+      border-radius:15px;
+    }
+
+    input{
+      width:100%;
+      padding:15px;
+      margin-bottom:20px;
+      border:none;
+      border-radius:10px;
+      background:#333;
+      color:white;
+      font-size:16px;
+    }
+
+    button{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:10px;
+      background:#ff3b3b;
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      background:#ff1a1a;
+    }
+
+    /* テーブル */
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:40px;
+    }
+
+    table th,
+    table td{
+      border:1px solid #333;
+      padding:15px;
+      text-align:center;
+    }
+
+    table th{
+      background:#ff3b3b;
+    }
+
+    /* モチベ */
+
+    .quote{
+      text-align:center;
+      font-size:28px;
+      font-weight:bold;
+      color:#ff3b3b;
+    }
+
+    /* ギャラリー */
+
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+    }
+
+    .gallery img{
+      width:100%;
+      height:350px;
+      object-fit:cover;
+      border-radius:15px;
+    }
+
+    footer{
+      background:#000;
+      text-align:center;
+      padding:30px;
+      color:#aaa;
+    }
+
+    @media(max-width:768px){
+
+      .hero h1{
+        font-size:40px;
+      }
+
+      .hero p{
+        font-size:18px;
+      }
+
+      h2{
+        font-size:30px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP -->
+
+  <header>
+
+    <div class="hero">
+
+      <div>
+
+        <h1>筋トレ成長記録</h1>
+
+        <p>
+          昨日の自分を超えろ
+        </p>
+
+        <a href="#record" class="btn">
+          記録を見る
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- ステータス -->
+
+  <section>
+
+    <h2>現在のステータス</h2>
+
+    <div class="status-grid">
+
+      <div class="status-card">
+        <h3>現在体重</h3>
+        <div class="big-number">72kg</div>
+      </div>
+
+      <div class="status-card">
+        <h3>継続日数</h3>
+        <div class="big-number">35日</div>
+      </div>
+
+      <div class="status-card">
+        <h3>ベンチMAX</h3>
+        <div class="big-number">80kg</div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- 今日のメニュー -->
+
+  <section>
+
+    <h2>今日のメニュー</h2>
+
+    <div class="menu-box">
+
+      <h3>胸トレ Day</h3>
+
+      <ul>
+        <li>ベンチプレス 4 × 10</li>
+        <li>ダンベルフライ 3 × 12</li>
+        <li>ディップス 3 × 15</li>
+      </ul>
+
+    </div>
+
+  </section>
+
+  <!-- 記録フォーム -->
+
+  <section id="record">
+
+    <h2>トレーニング記録追加</h2>
+
+    <form id="workoutForm">
+
+      <input type="text" id="date" placeholder="日付">
+
+      <input type="text" id="weight" placeholder="体重">
+
+      <input type="text" id="menu" placeholder="トレーニング内容">
+
+      <button type="submit">
+        記録する
+      </button>
+
+    </form>
+
+    <!-- テーブル -->
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>日付</th>
+          <th>体重</th>
+          <th>内容</th>
+        </tr>
+
+      </thead>
+
+      <tbody id="recordTable">
+
+        <tr>
+          <td>5/19</td>
+          <td>72kg</td>
+          <td>ベンチ80kg</td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </section>
+
+  <!-- グラフ -->
+
+  <section>
+
+    <h2>体重推移グラフ</h2>
+
+    <canvas id="weightChart"></canvas>
+
+  </section>
+
+  <!-- モチベ -->
+
+  <section>
+
+    <h2>今日の一言</h2>
+
+    <div class="quote" id="quote">
+
+    </div>
+
+  </section>
+
+  <!-- Before After -->
+
+  <section>
+
+    <h2>Before / After</h2>
+
+    <div class="gallery">
+
+      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1974&auto=format&fit=crop">
+
+      <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1974&auto=format&fit=crop">
+
+    </div>
+
+  </section>
+
+  <footer>
+
+    <p>
+      © 2026 筋トレ成長記録
+    </p>
+
+  </footer>
+
+  <!-- JavaScript -->
+
+  <script>
+
+    // モチベ名言
+
+    const quotes = [
+
+      "昨日の自分を超えろ",
+      "継続は最強の才能",
+      "限界の先に成長がある",
+      "努力は裏切らない",
+      "今日も1%成長"
+
+    ];
+
+    const randomQuote =
+      quotes[Math.floor(Math.random() * quotes.length)];
+
+    document.getElementById("quote").innerText =
+      randomQuote;
+
+
+    // フォーム追加
+
+    const form =
+      document.getElementById("workoutForm");
+
+    form.addEventListener("submit", function(event){
+
+      event.preventDefault();
+
+      const date =
+        document.getElementById("date").value;
+
+      const weight =
+        document.getElementById("weight").value;
+
+      const menu =
+        document.getElementById("menu").value;
+
+      const table =
+        document.getElementById("recordTable");
+
+      const newRow =
+        table.insertRow();
+
+      newRow.innerHTML = `
+        <td>${date}</td>
+        <td>${weight}</td>
+        <td>${menu}</td>
+      `;
+
+      form.reset();
+
+    });
+
+
+    // グラフ
+
+    const ctx =
+      document.getElementById('weightChart');
+
+    new Chart(ctx, {
+
+      type: 'line',
+
+      data: {
+
+        labels: ['5/1', '5/5', '5/10', '5/15', '5/19'],
+
+        datasets: [{
+
+          label: '体重',
+
+          data: [68, 69, 70, 71, 72],
+
+          borderWidth: 3
+
+        }]
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
